@@ -26,7 +26,7 @@ class ColorViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         colorizedView.layer.cornerRadius = 20
-        colorizedView.isOpaque = false
+        colorizedView.layer.opacity = 1
         setLabelValues()
         setSliderColors()
     }
