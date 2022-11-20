@@ -10,48 +10,56 @@ import UIKit
 class ColorViewController: UIViewController {
     
     // MARK: - IB Outlets
- 
-
+    
     @IBOutlet var colorizedView: UIView!
     
-    @IBOutlet var redLabel: UILabel!
-    @IBOutlet var greenLabel: UILabel!
-    @IBOutlet var blueLabel: UILabel!
-    @IBOutlet var alphaLabel: UILabel!
+    @IBOutlet var redTextField: UITextField!
+    @IBOutlet var greenTextField: UITextField!
+    @IBOutlet var blueTextField: UITextField!
+    @IBOutlet var alphaTextField: UITextField!
     
     @IBOutlet var redSlider: UISlider!
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     @IBOutlet var alpfaSlider: UISlider!
     
+    // MARK: - Variables
+    var colorSettings: MainColorSettings!
+    var delegate: ColorViewControllerDelegate!
+    
+    
     // MARK: - ViewDidLoad
     override func viewDidLoad() {
         super.viewDidLoad()
         colorizedView.layer.cornerRadius = 20
-        setLabelValues()
+        
+        setTextFieldValues()
         setSliderColors()
     }
     
     // MARK: - IB Actions
     @IBAction func sliderAction(_ sender: Any) {
         
-        setLabelValues()
+        setTextFieldValues()
         setSliderColors()
+        setViewColor()
         
-        colorizedView.backgroundColor = UIColor(
-            red: CGFloat(redSlider.value),
-            green: CGFloat(greenSlider.value),
-            blue: CGFloat(blueSlider.value),
-            alpha: CGFloat(alpfaSlider.value)
-        )
     }
     
+    @IBAction func inputColorValues(_ sender: Any) {
+        setSliderValues()
+        setViewColor()
+    }
+    
+    
+    
     // MARK: - Private functions
-    private func setLabelValues() {
-        redLabel.text = String(format: "%.1f", redSlider.value)
-        greenLabel.text = String(format: "%.1f", greenSlider.value)
-        blueLabel.text = String(format: "%.1f", blueSlider.value)
-        alphaLabel.text = String(format: "%.1f", alpfaSlider.value)
+    private func setTextFieldValues() {
+        redTextField.text = String(format: "%.2f", redSlider.value)
+        greenTextField.text = String(format: "%.2f", greenSlider.value)
+        blueTextField.text = String(format: "%.2f", blueSlider.value)
+        alphaTextField.text = String(format: "%.2f", alpfaSlider.value)
+        setSliderColors()
     }
     
     private func setSliderColors() {
@@ -61,6 +69,26 @@ class ColorViewController: UIViewController {
         alpfaSlider.minimumTrackTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: CGFloat(alpfaSlider.value))
     }
     
+    private func setSliderValues() {
+        redSlider.setValue(Float(redTextField.text!) ?? 0, animated: true)
+        greenSlider.setValue(Float(greenTextField.text!) ?? 0, animated: true)
+        blueSlider.setValue(Float(blueTextField.text!) ?? 0, animated: true)
+        alpfaSlider.setValue(Float(alphaTextField.text!) ?? 0, animated: true)
+    }
+    
+    private func setViewColor() {
+        colorizedView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: CGFloat(alpfaSlider.value)
+        )
+    }
     
 }
 
+// MARK: - UITextFieldDelegate
+
+extension ColorViewController: UITextFieldDelegate {
+    
+}
